@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Download Report</title>
+    <style>
+        .scroll {
+            height: 1000px;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <button onclick="downloadImage()">
+      Download Image
+    </button>
+    <p class="scroll">
+        By clicking the download button, 
+        a random image will be generated.
+    </p>
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js">
+    </script>
+    <script>
+        function downloadImage() {
+            axios({
+                url: 'https://github.com/govardhanskillcentre/download/blob/main/Steam%20Pedia%20Training%20Report.pdf',
+                method: 'GET',
+                responseType: 'blob'
+            })
+                .then((response) => {
+                    if (response.status === 200) {
+                        const url = 
+                            window.URL.createObjectURL
+                            (new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'fab.jpg');
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(url);
+                    } else {
+                        console.error('Error: Received non-200 status code');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error downloading the image:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
